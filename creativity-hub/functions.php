@@ -113,76 +113,49 @@ add_action('init', 'creativity_hub_register_block_pattern_categories');
 
 
 
+
+
+
+
 // Initialize information content
 require_once trailingslashit(get_template_directory()) . 'inc/vendor/autoload.php';
 
 use SuperbThemesThemeInformationContent\ThemeEntryPoint;
 
-define('SUPERBTHEMES_INFO_CONTENT_TEXT_DOMAIN', "creativity-hub");
-
 ThemeEntryPoint::init([
-	"templates" => [
-		array(
-			'name' => __("Front Page", "creativity-hub"),
-			'frontpage' => true,
-			'required' => true,
-			'image' => 'front-page.png',
-		),
-		array(
-			'name' => __("About", "creativity-hub"),
-			'required' => false,
-			'slug' => 'about',
-			'image' => 'about.png',
-		),
-		array(
-			'name' => __("Contact", "creativity-hub"),
-			'required' => false,
-			'slug' => 'contact',
-			'image' => 'contact.png',
-		),
-		array(
-			'name' => __("Blog", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'blog.png',
-		),
-		array(
-			'name' => __("Services", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'services.png',
-		),
-		array(
-			'name' => __("Page", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'pages.png',
-		),
-		array(
-			'name' => __("Post", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'posts.png',
-		),
-		array(
-			'name' => __("Archives", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'archives.png',
-		),
-		array(
-			'name' => __("Search", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => 'search.png',
-		),
-		array(
-			'name' => __("404", "creativity-hub"),
-			'template_only' => true,
-			'required' => true,
-			'image' => '404.png',
-		),
-	],
-	'theme_url' => 'https://superbthemes.com/creativity-hub/',
-	'demo_url' => 'https://superbthemes.com/demo/creativity-hub/'
+    'type' => 'block', // block / classic
+    'theme_url' => 'https://superbthemes.com/creativity-hub/',
+    'demo_url' => 'https://superbthemes.com/demo/creativity-hub/',
+    'features' => array(
+    	array(
+    		'title' => __("Theme Designer", "creativity-hub"),
+    		'icon' => "lego-duotone.webp",
+    		'description' => __("Choose from over 300 designs for footers, headers, landing pages & all other theme parts.", "creativity-hub")
+    	),
+    	   	array(
+    		'title' => __("Editor Enhancements", "creativity-hub"),
+    		'icon' => "1-1.png",
+    		'description' => __("Enhanced editor experience, grid systems, improved block control and much more.", "creativity-hub")
+    	),
+    	array(
+    		'title' => __("Custom CSS", "creativity-hub"),
+    		'icon' => "2-1.png",
+    		'description' => __("Add custom CSS with syntax highlight, custom display settings, and minified output.", "creativity-hub")
+    	),
+    	array(
+    		'title' => __("Animations", "creativity-hub"),
+    		'icon' => "wave-triangle-duotone.webp",
+    		'description' => __("Animate any element on your website with one click. Choose from over 50+ animations.", "creativity-hub")
+    	),
+    	array(
+    		'title' => __("WooCommerce Integration", "creativity-hub"),
+    		'icon' => "shopping-cart-duotone.webp",
+    		'description' => __("Choose from over 100 unique WooCommerce designs for your e-commerce store.", "creativity-hub")
+    	),
+    	array(
+    		'title' => __("Responsive Controls", "creativity-hub"),
+    		'icon' => "arrows-out-line-horizontal-duotone.webp",
+    		'description' => __("Make any theme mobile-friendly with SuperbThemes responsive controls.", "creativity-hub")
+    	)
+    )
 ]);

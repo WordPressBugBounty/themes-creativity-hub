@@ -10,67 +10,136 @@ class ThemePageTemplate
     private $ParentName;
     private $ThemeName;
     private $PremiumText;
+    private $Type;
 
     private $Features;
     private $ThemeLink;
+    private $ThemePremiumLink;
     private $DemoLink;
+    private $ContactLink;
 
     public function __construct($data)
     {
         $this->Theme = wp_get_theme();
         $this->ParentName = is_child_theme() ? wp_get_theme($this->Theme->Template) : '';
-        $this->ThemeName = is_child_theme() ? sprintf(__("%s and %s", 'creativity-hub'), $this->Theme, $this->ParentName) : $this->Theme;
-        $this->PremiumText = is_child_theme() ? sprintf(__("Unlock all features by upgrading to the premium edition of %s and its parent theme %s.", 'creativity-hub'), $this->Theme, $this->ParentName) : sprintf(__("Unlock all features by upgrading to the premium edition of %s.", 'creativity-hub'), $this->Theme);
-        $this->ThemeLink = $data['theme_url'];
-        $this->DemoLink = $data['demo_url'];
+        $this->ThemeName = is_child_theme() ? sprintf(/* translators: %s are theme names */__("%s and %s", 'creativity-hub'), $this->Theme, $this->ParentName) : $this->Theme;
+        $this->PremiumText = is_child_theme() ? sprintf(/* translators: %s are theme names */__("Unlock all features by upgrading to the premium edition of %s and its parent theme %s.", 'creativity-hub'), $this->Theme, $this->ParentName) : sprintf(/* translators: %s is a theme name */__("Unlock all features by upgrading to the premium edition of %s.", 'creativity-hub'), $this->Theme);
+        $this->ThemeLink = !empty($data['theme_url']) ? $data['theme_url'] : 'https://superbthemes.com/';
+        $this->DemoLink = !empty($data['demo_url']) ? $data['demo_url'] . '?su_source=theme_settings' : 'https://superbthemes.com/';
+        $this->ContactLink = 'https://superbthemes.com/contact/?su_source=theme_settings';
+        $this->Type = $data['type'];
         $base_features = array(
             array(
-                'title' => __("Fully Search Engine Optimized", "creativity-hub"), 'base' => true, 'icon' => "img-icon-8.png", 'description' => __("Get free traffic by ranking #1 on Google with the lightning-fast & SEO-optimized premium version.", "creativity-hub")
+                'title' => __("Fully Search Engine Optimized", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-8.png",
+                'description' => __("Get free traffic by ranking #1 on Google with the lightning-fast & SEO-optimized premium version.", "creativity-hub"),
+                'source' => 'seo'
             ),
             array(
-                'title' => __("Page Speed Optimized", "creativity-hub"), 'base' => true, 'icon' => "img-icon-6.png", 'description' => __("Unlock maximum speed with the premium version. It loads in less than 0.3 seconds. ", "creativity-hub")
+                'title' => __("Page Speed Optimized", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-6.png",
+                'description' => __("Unlock maximum speed with the premium version. It loads in less than 0.3 seconds. ", "creativity-hub"),
+                'source' => 'speed'
             ),
             array(
-                'title' => __("Customize Everything", "creativity-hub"), 'base' => true, 'icon' => "img-icon-7.png", 'description' => __("Customize the design to fit your brand or style with our easy-to-use customization options.", "creativity-hub")
+                'title' => __("Customize Everything", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-7.png",
+                'description' => __("Customize the design to fit your brand or style with our easy-to-use customization options.", "creativity-hub"),
+                'source' => 'customization'
             ),
             array(
-                'title' => __("E-commerce Compatibility", "creativity-hub"), 'base' => true, 'icon' => "img-icon-5.png", 'description' => __("Create your online store easily. The premium version is compatible with all popular e-commerce plugins.", "creativity-hub")
+                'title' => __("E-commerce Compatibility", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-5.png",
+                'description' => __("Create your online store easily. The premium version is compatible with all popular e-commerce plugins.", "creativity-hub"),
+                'source' => 'ecommerce'
             ),
             array(
-                'title' => __("Customer Support & Documentation", "creativity-hub"), 'base' => true, 'icon' => "img-icon-4.png", 'description' => __("Benefit from our comprehensive documentation and dedicated support team, always ready to help.", "creativity-hub")
+                'title' => __("Customer Support & Documentation", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-4.png",
+                'description' => __("Benefit from our comprehensive documentation and dedicated support team, always ready to help.", "creativity-hub"),
+                'source' => 'support'
             ),
             array(
-                'title' => __("Works With All Page Builders", "creativity-hub"), 'base' => true, 'icon' => "img-icon-3.png", 'description' => __("Brizy, Elementor, Divi Builder, Beaver Builder - you name it. Every page builder plugin is compatible.", "creativity-hub")
+                'title' => __("Works With All Page Builders", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-3.png",
+                'description' => __("Brizy, Elementor, Divi Builder, Beaver Builder - you name it. Every page builder plugin is compatible.", "creativity-hub"),
+                'source' => 'page_builders'
             ),
             array(
-                'title' => __("1-Click Starter Content Import", "creativity-hub"), 'base' => true, 'icon' => "img-icon-2.png", 'description' => __("Get started easily with our one-click demo content import feature. Get your website up and running in seconds.", "creativity-hub")
+                'title' => __("1-Click Starter Content Import", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-2.png",
+                'description' => __("Get started easily with our one-click demo content import feature. Get your website up and running in seconds.", "creativity-hub"),
+                'source' => 'starter_content'
             ),
             array(
-                'title' => __("Premium Designs, Patterns & Layouts", "creativity-hub"), 'base' => true, 'icon' => "img-icon-1.png", 'description' => __("Access all the premium layouts and designs perfect for any niche or industry.", "creativity-hub")
+                'title' => __("Premium Designs, Patterns & Layouts", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-icon-1.png",
+                'description' => __("Access all the premium layouts and designs perfect for any niche or industry.", "creativity-hub"),
+                'source' => 'designs'
             ),
             array(
-                'title' => __("Works On All Devices And Browsers", "creativity-hub"), 'base' => true, 'icon' => "devices-duotone.svg", 'description' => __("The premium version looks perfect everywhere, from desktop to mobile, and in every browser.", "creativity-hub")
+                'title' => __("Works On All Devices And Browsers", "creativity-hub"),
+                'base' => true,
+                'icon' => "devices-duotone.svg",
+                'description' => __("The premium version looks perfect everywhere, from desktop to mobile, and in every browser.", "creativity-hub"),
+                'source' => 'devices'
             ),
             array(
-                'title' => __("AMP Compatible And Mobile Ready", "creativity-hub"), 'base' => true, 'icon' => "fse_icon_mobile.svg", 'description' => __("Stay ahead with Accelerated Mobile Pages (AMP) compatibility.", "creativity-hub")
+                'title' => __("AMP Compatible And Mobile Ready", "creativity-hub"),
+                'base' => true,
+                'icon' => "fse_icon_mobile.svg",
+                'description' => __("Stay ahead with Accelerated Mobile Pages (AMP) compatibility.", "creativity-hub"),
+                'source' => 'amp'
             ),
             array(
-                'title' => __("GDPR Compliant", "creativity-hub"), 'base' => true, 'icon' => "shield-check-duotone.svg", 'description' => __("Our premium version comes fully compliant, giving you peace of mind about user data protection and privacy.", "creativity-hub")
+                'title' => __("GDPR Compliant", "creativity-hub"),
+                'base' => true,
+                'icon' => "shield-check-duotone.svg",
+                'description' => __("Our premium version comes fully compliant, giving you peace of mind about user data protection and privacy.", "creativity-hub"),
+                'source' => 'gdpr'
             ),
             array(
-                'title' => __("Frequent Updates", "creativity-hub"), 'base' => true, 'icon' => "arrows-clockwise-duotone.svg", 'description' => __("Our premium version provides frequent enhancements for security, performance, and features.", "creativity-hub")
+                'title' => __("Frequent Updates", "creativity-hub"),
+                'base' => true,
+                'icon' => "arrows-clockwise-duotone.svg",
+                'description' => __("Our premium version provides frequent enhancements for security, performance, and features.", "creativity-hub"),
+                'source' => 'updates'
             ),
             array(
-                'title' => __("Child Themes", "creativity-hub"), 'base' => true, 'icon' => "img-2.png", 'description' => __("Use child themes to make modifications without affecting the parent theme's code, ensuring smooth updates.", "creativity-hub")
+                'title' => __("Child Themes", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-2.png",
+                'description' => __("Use child themes to make modifications without affecting the parent theme's code, ensuring smooth updates.", "creativity-hub"),
+                'source' => 'child_themes'
             ),
             array(
-                'title' => __("WordPress blocks", "creativity-hub"), 'base' => true, 'icon' => "stack-duotone.png", 'description' => __("Use our many custom WordPress Gutenberg blocks for every purpose!", "creativity-hub")
+                'title' => __("WordPress blocks", "creativity-hub"),
+                'base' => true,
+                'icon' => "stack-duotone.png",
+                'description' => __("Use our many custom WordPress Gutenberg blocks for every purpose!", "creativity-hub"),
+                'source' => 'blocks'
             ),
             array(
-                'title' => __("WordPress patterns", "creativity-hub"), 'base' => true, 'icon' => "grid-nine-duotone.png", 'description' => __("Take advantage of the 400+ beautiful patterns for every type of website.", "creativity-hub")
+                'title' => __("WordPress patterns", "creativity-hub"),
+                'base' => true,
+                'icon' => "grid-nine-duotone.png",
+                'description' => __("Take advantage of the 400+ beautiful patterns for every type of website.", "creativity-hub"),
+                'source' => 'patterns'
             ),
             array(
-                'title' => __("Elementor sections", "creativity-hub"), 'base' => true, 'icon' => "img-1.png", 'description' => __("Access 300+ pre-built Elementor sections and build beautiful sites, fast.", "creativity-hub")
+                'title' => __("Elementor sections", "creativity-hub"),
+                'base' => true,
+                'icon' => "img-1.png",
+                'description' => __("Access 300+ pre-built Elementor sections and build beautiful sites, fast.", "creativity-hub"),
+                'source' => 'elementor'
             )
         );
         $this->Features = $data['features'] ? array_merge($base_features, $data['features']) : $base_features;
@@ -88,7 +157,11 @@ class ThemePageTemplate
                     <div class="spt-theme-settings-wrapper-main-content-section">
                         <div class="spt-theme-settings-wrapper-main-content-section-top">
                             <span class="spt-theme-settings-headline"><?php esc_html_e("Customize Settings", 'creativity-hub'); ?></span>
-                            <a class="spt-theme-settings-headline-link" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                            <?php if ($this->Type === 'block') : ?>
+                                <a class="spt-theme-settings-headline-link" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                            <?php else : ?>
+                                <a class="spt-theme-settings-headline-link" href="<?php echo esc_url(admin_url('customize.php')); ?>"><?php esc_html_e("Go To Customizer", 'creativity-hub'); ?></a>
+                            <?php endif; ?>
                         </div>
 
                         <div class="spt-theme-settings-content">
@@ -103,20 +176,35 @@ class ThemePageTemplate
                                         <p><?php esc_html_e("Add a navigation to your website to improve the user experience.", 'creativity-hub'); ?></p>
                                     </div>
                                     <div class="spt-theme-settings-content-item-content">
-                                        <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php else: ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('nav-menus.php')); ?>"><?php esc_html_e("Go to Menus", "creativity-hub"); ?></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div class="spt-theme-settings-content-item">
                                     <div class="spt-theme-settings-content-item-header">
                                         <img width="25" height="25" src="<?php echo esc_url(get_template_directory_uri() . '/inc/superbthemes-info-content/icons/squares-four.svg'); ?>" />
-                                        <div class="spt-theme-settings-content-item-headline">
-                                            <?php esc_html_e("Edit Front Page", 'creativity-hub'); ?>
-                                        </div>
-                                        <p><?php esc_html_e("Edit and customize your front page design through the site editor.", 'creativity-hub'); ?></p>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <div class="spt-theme-settings-content-item-headline">
+                                                <?php esc_html_e("Edit Front Page", 'creativity-hub'); ?>
+                                            </div>
+                                            <p><?php esc_html_e("Edit and customize your front page design through the site editor.", 'creativity-hub'); ?></p>
+                                        <?php else: ?>
+                                            <div class="spt-theme-settings-content-item-headline">
+                                                <?php esc_html_e("Add Widgets", 'creativity-hub'); ?>
+                                            </div>
+                                            <p><?php esc_html_e("Add and customize widgets in any widget space.", 'creativity-hub'); ?></p>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="spt-theme-settings-content-item-content">
-                                        <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php else: ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('widgets.php')); ?>"><?php esc_html_e("Go to Widgets", 'creativity-hub'); ?></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -129,7 +217,11 @@ class ThemePageTemplate
                                         <p><?php esc_html_e("Customize your website design to fit your personality or brand.", 'creativity-hub'); ?></p>
                                     </div>
                                     <div class="spt-theme-settings-content-item-content">
-                                        <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php else: ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('customize.php')); ?>"><?php esc_html_e("Go To Customizer", 'creativity-hub'); ?></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -142,7 +234,11 @@ class ThemePageTemplate
                                         <p><?php esc_html_e("Add your website name and tagline to improve the design and SEO.", 'creativity-hub'); ?></p>
                                     </div>
                                     <div class="spt-theme-settings-content-item-content">
-                                        <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php else: ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('customize.php')); ?>"><?php esc_html_e("Go To Customizer", 'creativity-hub'); ?></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -155,7 +251,11 @@ class ThemePageTemplate
                                         <p><?php esc_html_e("Add a custom logo to make your website look more professional.", 'creativity-hub'); ?></p>
                                     </div>
                                     <div class="spt-theme-settings-content-item-content">
-                                        <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php if ($this->Type === 'block') : ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('site-editor.php'))  ?>"><?php esc_html_e("Go To Site Editor", 'creativity-hub'); ?></a>
+                                        <?php else: ?>
+                                            <a class="spt-theme-settings-content-item-button" href="<?php echo esc_url(admin_url('customize.php')); ?>"><?php esc_html_e("Go To Customizer", 'creativity-hub'); ?></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -179,7 +279,7 @@ class ThemePageTemplate
                     <div class="spt-theme-settings-wrapper-main-content-section">
                         <div class="spt-theme-settings-wrapper-main-content-section-top">
                             <span class="spt-theme-settings-headline"><?php esc_html_e("Premium Features", 'creativity-hub'); ?></span>
-                            <a class="spt-theme-settings-headline-link" href="<?php echo esc_url($this->ThemeLink); ?>"><?php esc_html_e("Unlock All Features", 'creativity-hub'); ?></a>
+                            <a class="spt-theme-settings-headline-link" href="<?php echo esc_url($this->ThemeLink . "?su_source=theme_settings_unlock_all"); ?>"><?php esc_html_e("Unlock All Features", 'creativity-hub'); ?></a>
                         </div>
                         <p class="spt-theme-settings-wrapper-main-content-section-top-description">
                             <?php esc_html_e("Create a beautiful website easily, without coding.", 'creativity-hub'); ?>
@@ -188,12 +288,14 @@ class ThemePageTemplate
                         <div class="spt-theme-settings-content spt-theme-settings-content-us">
                             <?php
                             foreach ($this->Features as $feature) :
+                                $source = isset($feature['source']) ? $feature['source'] : 'theme_settings';
+                                $icon = isset($feature['icon']) ? $feature['icon'] : 'img-icon-7.png';
                             ?>
-                                <a target="_blank" href="<?php echo esc_url($this->ThemeLink); ?>" class="spt-theme-settings-content-item spt-theme-settings-content-item-unavailable">
+                                <a target="_blank" href="<?php echo esc_url($this->ThemeLink . "?su_source=theme_settings_feature_" . $source); ?>" class="spt-theme-settings-content-item spt-theme-settings-content-item-unavailable">
                                     <span class="spt-theme-settings-content-item-unavailable-premium"><?php echo esc_html__("Premium", 'creativity-hub'); ?></span>
                                     <div class="spt-theme-settings-content-item-header">
                                         <div>
-                                            <img height="32" width="32" src="<?php echo esc_url(get_template_directory_uri() . (isset($feature['base']) ? '/inc/superbthemes-info-content/icons/' : '/inc/superbthemes-info-assets/') . $feature["icon"]); ?>" />
+                                            <img height="32" width="32" src="<?php echo esc_url(get_template_directory_uri() . '/inc/superbthemes-info-content/icons/' . $icon); ?>" />
                                         </div>
                                         <span class="spt-theme-settings-content-us-title"><?php echo esc_html($feature["title"]); ?></span></span>
                                         <?php if (isset($feature['description'])) : ?>
@@ -228,7 +330,7 @@ class ThemePageTemplate
                         <div class="spt-theme-settings-wrapper-sidebar-item-header"><?php esc_html_e("Upgrade to premium", 'creativity-hub'); ?></div>
                         <div class="spt-theme-settings-wrapper-sidebar-item-content">
                             <p><?php echo esc_html($this->PremiumText); ?></p>
-                            <a href="<?php echo esc_url($this->ThemeLink); ?>" target="_blank" class="button button-primary"><?php esc_html_e("View Premium Version", 'creativity-hub'); ?></a>
+                            <a href="<?php echo esc_url($this->ThemeLink . "?su_source=theme_settings_view_premium"); ?>" target="_blank" class="button button-primary"><?php esc_html_e("View Premium Version", 'creativity-hub'); ?></a>
                         </div>
                     </div>
 
@@ -237,7 +339,7 @@ class ThemePageTemplate
                         <div class="spt-theme-settings-wrapper-sidebar-item-header"><?php esc_html_e("Contact support", 'creativity-hub'); ?></div>
                         <div class="spt-theme-settings-wrapper-sidebar-item-content">
                             <p><?php echo esc_html(sprintf(__("If you have issues with %s, please send us an email through our website!", 'creativity-hub'), $this->Theme)); ?></p>
-                            <a href="https://superbthemes.com/customer-support/" target="_blank" class="button"><?php esc_html_e("Contact Support", 'creativity-hub'); ?></a>
+                            <a href="<?php echo esc_url($this->ContactLink); ?>" target="_blank" class="button"><?php esc_html_e("Contact Support", 'creativity-hub'); ?></a>
                         </div>
                     </div>
 
@@ -246,7 +348,7 @@ class ThemePageTemplate
                         <div class="spt-theme-settings-wrapper-sidebar-item-header"><?php esc_html_e("Give us feedback", 'creativity-hub'); ?></div>
                         <div class="spt-theme-settings-wrapper-sidebar-item-content">
                             <p><?php echo esc_html(sprintf(__("Do you enjoy using %s? Support us by reviewing us on WordPress.org!", 'creativity-hub'), $this->Theme)); ?></p>
-                            <a href="https://wordpress.org/support/theme/<?php echo esc_attr(get_stylesheet()); ?>/reviews/#new-post" target="_blank" class="button"><?php esc_html_e("Leave a Review", 'creativity-hub'); ?></a>
+                            <a href="<?php echo esc_url('https://wordpress.org/support/theme/' . get_stylesheet() . '/reviews/#new-post'); ?>" target="_blank" class="button"><?php esc_html_e("Leave a Review", 'creativity-hub'); ?></a>
                         </div>
                     </div>
 
